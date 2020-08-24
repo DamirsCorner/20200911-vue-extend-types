@@ -9,8 +9,16 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-@Component({})
-export default class extends Vue {
+@Component({
+  created(this: About) {
+    this.span = this.$apm.startSpan("create-mount-duration", "custom");
+  },
+  mounted(this: About) {
+    this.span?.end();
+  },
+})
+export default class About extends Vue {
+  span?: Span;
   goBack() {
     window.history.length > 0 ? this.$router.go(-1) : this.$router.push("/");
   }
